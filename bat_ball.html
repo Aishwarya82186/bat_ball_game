@@ -41,6 +41,14 @@
 
 </body>
 <script>
+    let score ={
+        win: 0,
+        lost: 0,
+        tie: 0,
+        displayScore: function() {
+        return `No of matches Won:${score.win}, Lost:${score.lost}, Tie: ${score.tie}`;
+      }
+    };
     function generateComputerChoice(){
         let randomNumber = Math.random()*3;
         if(randomNumber >0 && randomNumber <= 1) {
@@ -55,18 +63,25 @@
      }    
         function getResult(userMove, computerMove) {
             if (userMove === computerMove){
+                score.tie++;
                 return `It's a tie`;
             }
             else if ((userMove === 'Bat' && computerMove === 'Stump') || (userMove === 'Ball' && computerMove === 'Bat') || (userMove === 'Stump' && computerMove === 'Ball')){
+                score.win++;
                 return 'Computer has won';
             }
             else {
+                score.lost++;
                 return 'User won';
             }
         }   
 
     function showResult(userMove, computerMove, result) {
-      alert(`You have chosen ${userMove}. Computer choice is ${computerMove} and ${result}`);
+        alert(`You have chosen ${userMove}. Computer choice is ${computerMove}
+      
+        ${result}
+      
+        ${score.displayScore()}`);
     }
 
 </script>
