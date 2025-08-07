@@ -7,12 +7,25 @@
             text-align: center;
         }
         .button{
-            border-radius: 2px rgb(152, 151, 151);
-            padding: 5px;
-            margin-right: 5px;
-            width: 55px;
+            height: 100px;
+            width: 100px;
+            border: none;
+            margin-right: 10px;
+            border-radius: 50px;
+            cursor: pointer;
             background-color: rgb(222, 199, 213);
-            color: darkmagenta;
+        }
+        .my-image{
+            height: 100px;
+            width: 100px;
+            border-radius: 50px;
+        }
+        #reset-button{
+            height: 50px;
+            width: 50px;
+            background-color: rgb(210, 189, 230);
+            color: rgb(81, 12, 142);
+
         }
     </style>
 </head>
@@ -22,33 +35,52 @@
       let computerChoice= generateComputerChoice(); 
       let resultMsg = getResult('Bat',computerChoice) ;
       showResult('Bat', computerChoice, resultMsg);
-     ">Bat</button>
+     "><img src="image/bat.avif" alt="bat image" class="my-image"></button>
 
 
     <button class="button" onclick="
        computerChoice= generateComputerChoice(); 
        resultMsg = getResult('Ball',computerChoice) ;
        showResult('Ball', computerChoice, resultMsg);
-     ">Ball</button>
+     "><img src="image/ball.jpeg" alt="ball image" class="my-image"></button>
 
 
     <button class="button" onclick="
      computerChoice= generateComputerChoice(); 
      resultMsg = getResult('Stump',computerChoice) ;
       showResult('Stump', computerChoice, resultMsg);
-      ">Stump</button>
+      "><img src="image/stump.jpg" alt="stump img" class="my-image"></button>
+  
+
+    <h3 id="user-move"></h3>
+    <h3 id="computer-move"></h3>
+    <h3 id="result"></h3>
+    <h3 id="score"></h3>
+
+    <button id="reset-button" onclick="localStorage.clear() ;
+    resetScore(); 
+    ">reset</button>
 
 
 </body>
 <script>
-    let score ={
+    let scoreStr = localStorage.getItem('Score');
+    let score;
+    resetScore(scoreStr);
+
+    function resetScore(scoreStr) {
+      score = scoreStr ? JSON.parse(scoreStr) : {
         win: 0,
         lost: 0,
         tie: 0,
-        displayScore: function() {
-        return `No of matches Won:${score.win}, Lost:${score.lost}, Tie: ${score.tie}`;
-      }
-    };
+      };
+
+      score.displayScore = function() {
+        return `Score:Won:${score.win}, Lost:${score.lost}, Tie: ${score.tie}`;
+      };
+
+      showResult();
+    }
     function generateComputerChoice(){
         let randomNumber = Math.random()*3;
         if(randomNumber >0 && randomNumber <= 1) {
@@ -77,11 +109,17 @@
         }   
 
     function showResult(userMove, computerMove, result) {
-        alert(`You have chosen ${userMove}. Computer choice is ${computerMove}
+      localStorage.setItem('Score', JSON.stringify(score));
+
+      document.querySelector('#user-move').innerText = 
+        userMove ? `You have chosen ${userMove}` : '';
       
-        ${result}
+      document.querySelector('#computer-move').innerText =
+        computerMove ? `Computer choice is ${computerMove}` : '';
       
-        ${score.displayScore()}`);
+      document.querySelector('#result').innerText = result || '';
+
+      document.querySelector('#score').innerText = score.displayScore();
     }
 
 </script>
